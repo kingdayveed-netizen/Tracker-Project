@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+<style>
+body { font-family: Arial, sans-serif; background-color: blueviolet;}
+.container { max-width: 500px; margin: 20px auto; }
+
+ul { list-style: none; padding: 0; }
+li { padding: 10px; background: #ca9248; margin: 5px 0; display: flex; justify-content: space-between; }
+.income { color: green; }
+.expense { color: red; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Expense Tracker</h1>
+<input id="description" type="text" placeholder="Description"/>
+<input id="amount" type="number" placeholder="Amount"/>
+<button onclick="addTransaction()">Add</button>
+<h3>History</h3>
+<ul id="history"></ul>
+<h3>Total: $<span id="total">0</span></h3>
+</div>
+<script>
+let total = 0;
+
+function addTransaction() {
+const description = document.getElementById('description').value.trim();
+const amount = parseFloat(document.getElementById('amount').value);
+
+if (!description || isNaN(amount)) return alert('Please enter valid details.');
+
+const history = document.getElementById('history');
+const li = document.createElement('li');
+li.className = amount >= 0 ? 'income' : 'expense';
+li.innerHTML = `${description}: $${amount} <button onclick="removeTransaction(this,
+${amount})">Delete</button>`;
+history.appendChild(li);
+
+total += amount;
+document.getElementById('total').innerText = total.toFixed(2);
+
+document.getElementById('description').value ="";
+document.getElementById('amount').value = "";
+}
+
+function removeTransaction(button, amount) {
+button.parentElement.remove();
+total -= amount;
+document.getElementById('total').innerText = total.toFixed(2);
+}
+</script>
+</body>
+</html>
